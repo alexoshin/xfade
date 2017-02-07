@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {text-align:center;}
+        </style>
+    </head>
+    <body>
+        <section id="videos">
+            <div id="playerL" style="visibility:hidden;"></div>
+            <div id="playerR" style="visibility:hidden;"></div>
+        </section>
+
+        <section id="playbackButtons">
+            <button id="mainbtn" onclick="buttonClick()">Click to Start</button>
+        </section>
+
+        <section></section>
+
+        <section id="xfadeButtons" style="padding-top:10px;">
+            <button id="xfade" onclick="xfade()" style="visibility:hidden;">Crossfade!</button>
+        </section>
+
+        <script>
+            videoLid = 'BdrtNio7t0Y'
+            videoRid = 'Bx_rGx2MKvY'
+
+            var firstClick = true;
+            var playing = false;
+
+            var toggle = true;
+
+            function buttonClick() {
+                if (firstClick) {
+                    document.getElementById("mainbtn").textContent = "Loading... Please Wait";
+                    var tag = document.createElement('script');
+                    tag.src = "https://www.youtube.com/iframe_api";
+                    var firstScriptTag = document.getElementsByTagName('script')[0];
+                    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+                    firstClick = false;
+                } else if (!loadL && !loadR) {
+                    if (playing) {
+                        document.getElementById("mainbtn").textContent = "Play";
+                        playerL.pauseVideo();
+                        playerR.pauseVideo();
+                        playing = false;
+                    } else {
+                        document.getElementById("mainbtn").textContent = "Stop";
+                        playerL.playVideo();
+                        playerR.playVideo();
+                        playing = true;
+                    }
+                }
+            }
+
+            var playerL;
+            var playerR;
+            function onYouTubeIframeAPIReady() {
+                playerL = new YT.Player('playerL', {
+                    height: '390',
+                    width: '640',
+                    videoId: videoLid,
+                    events: {
+                        'onReady': onPlayerLReady,
+                        'onStateChange': onPlayerLStateChange
+                    }
+                });
+                playerR = new YT.Player('playerR', {
+                    height: '390',
+                    width: '640',
+                    videoId: videoRid,
+                    events: {
+                        'onReady': onPlayerRReady,
+                        'onStateChange': onPlayerRStateChange
+                    }
+                });
+            }
+
+            var loadL = false;
+            var loadR = false;
+            function onPlayerLReady(event) {
+                loadL = true;
+                playerL.mute();
+                playerL.seekTo(1);
+            }
+            function onPlayerRReady(event) {
+                loadR = true;
+                playerR.mute();
+                playerR.seekTo(1);
+            }
+
+            function onPlayerLStateChange(event) {
+                if (event.data == YT.PlayerState.PLAYING) {
+                    if(loadL)
+                    {
+                        playerL.pauseVideo();
+                        playerL.seekTo(0);
+                        playerL.unMute();
+                        document.getElementById("playerL").style.visibility = "visible";
+                        loadL = false;
+                        bothReady();
+
+                        // player2Ready = true;
+                        // preloading2 = true;             // Flag for foreground video preloading
+                        // player2.mute();
+                        // //$( "#player2" ).hide();
+                        // player.seekTo(1);              // Start buffering and wait the event
+                    }
+                    else
+                        playerL.playVideo();            // If not preloading link the 2 players PLAY events
+                }
+            }
+
+            function onPlayerRStateChange(event) {
+                if (event.data == YT.PlayerState.PLAYING) {
+                    if(loadR)
+                    {
+                        playerR.pauseVideo();
+                        playerR.seekTo(0);
+                        //playerR.unMute();
+                        document.getElementById("playerR").style.visibility = "visible";
+                        loadR = false;
+                        bothReady();
+                    }
+                    else
+                        playerR.playVideo();            // If not preloading link the 2 players PLAY events
+                }
+            }
+
+            function bothReady() {
+                if (!loadL && !loadR) {
+                    document.getElementById("mainbtn").textContent = "Play";
+                    document.getElementById("xfade").style.visibility = "visible";
+                }
+            }
+
+            function xfade() {
+                if (toggle) {
+                    playerL.mute();
+                    playerR.unMute();
+                    toggle = false;
+                } else {
+                    playerR.mute();
+                    playerL.unMute();
+                    toggle = true;
+                }
+            }
+
+            function stopVideo() {
+                player.stopVideo();
+            }
+
+        </script>
+    </body>
+</html>
