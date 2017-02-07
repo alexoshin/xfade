@@ -12,7 +12,9 @@
         </section>
 
         <section id="playbackButtons">
-            <button id="mainbtn" onclick="buttonClick()">Click to Start</button>
+            <button id="leftbutton" onclick="alight()">Alight</button>
+            <button id="mainbtn" onclick="buttonClick()" disabled=true>Click to Start</button>
+            <button id="rightbutton" onclick="duskfalls()">Dusk Falls</button>
         </section>
 
         <section></section>
@@ -22,8 +24,8 @@
         </section>
 
         <script>
-            videoLid = 'BdrtNio7t0Y'
-            videoRid = 'Bx_rGx2MKvY'
+            var videoLid;
+            var videoRid;
 
             var firstClick = true;
             var playing = false;
@@ -31,10 +33,16 @@
             var toggle = true;
 
             var fadetime = 1000;
+            var maxvol = 50;
+            var t = -1.0;
+
+            var loading = false;
 
             function buttonClick() {
                 if (firstClick) {
                     //window.location.assign(window.location.href + "?" + videoLid + "?" + videoRid);
+                    document.getElementById("leftbutton").style.display = "none";
+                    document.getElementById("rightbutton").style.display = "none";
                     document.getElementById("mainbtn").textContent = "Loading... Please Wait";
                     var tag = document.createElement('script');
                     tag.src = "https://www.youtube.com/iframe_api";
@@ -48,12 +56,32 @@
                         playerR.pauseVideo();
                         playing = false;
                     } else {
-                        document.getElementById("mainbtn").textContent = "Stop";
+                        document.getElementById("mainbtn").textContent = "Pause";
                         playerL.playVideo();
                         playerR.playVideo();
                         playing = true;
                     }
                 }
+            }
+
+            function alight() {
+                videoLid = 'Xb3UUVVLl8E';
+                videoRid = 'xvOy3sjQUe8';
+                document.getElementById("leftbutton").textContent = "Songs set to Alight";
+                document.getElementById("leftbutton").disabled = true;
+                document.getElementById("rightbutton").textContent = "Dusk Falls";
+                document.getElementById("rightbutton").disabled = false;
+                document.getElementById("mainbtn").disabled = false;
+            }
+
+            function duskfalls() {
+                videoLid = 'BdrtNio7t0Y';
+                videoRid = 'Bx_rGx2MKvY';
+                document.getElementById("rightbutton").textContent = "Songs set to Dusk Falls";
+                document.getElementById("rightbutton").disabled = true;
+                document.getElementById("leftbutton").textContent = "Alight";
+                document.getElementById("leftbutton").disabled = false;
+                document.getElementById("mainbtn").disabled = false;
             }
 
             var playerL;
@@ -133,34 +161,51 @@
             }
 
             function xfade() {
-                if (toggle) {
-                    var volL = playerL.getVolume();
-                    var change = volL / (fadetime / 100);
-                    var i = 0;
-                    var interval = setInterval(function() {
-                        if (i >= fadetime / 100) {
-                            clearInterval(interval);
-                        } else {
-                            changeVolume(playerL, -change);
-                            changeVolume(playerR, change);
-                            i++;
-                        }
-                    }, 100);
-                    toggle = false;
-                } else {
-                    var volR = playerR.getVolume();
-                    var change = volR / (fadetime / 100);
-                    var i = 0;
-                    var interval = setInterval(function() {
-                        if (i >= fadetime / 100) {
-                            clearInterval(interval);
-                        } else {
-                            changeVolume(playerL, change);
-                            changeVolume(playerR, -change);
-                            i++;
-                        }
-                    }, 100);
-                    toggle = true;
+                if (!loading) {
+                    loading = true;
+                    if (toggle) {
+                        var changeT = 2/(fadetime/50);
+                        var interval = setInterval(function() {
+                            if (t >= 1) {
+                                clearInterval(interval);
+                                loading = false;
+                            } else {
+                                t += changeT;
+                                //playerL.setVolume(maxvol * (1/2 * (1 - t)));
+                                //playerR.setVolume(maxvol * (1/2 * (1 + t)));
+                                //playerR.setVolume(maxvol * Math.sqrt(1/2 * (1 + t)));
+                                if (t < 0) {
+                                    playerL.setVolume(maxvol * Math.sqrt(1/2 * (1 - t)));
+                                    playerR.setVolume(maxvol * (1/2 * (1 + t)));
+                                } else {
+                                    playerL.setVolume(maxvol * (1/2 * (1 - t)));
+                                    playerR.setVolume(maxvol * Math.sqrt(1/2 * (1 + t)));
+                                }
+                            }
+                        }, 50);
+                        toggle = false;
+                    } else {
+                        var changeT = 2/(fadetime/50);
+                        var interval = setInterval(function() {
+                            if (t <= -1) {
+                                clearInterval(interval);
+                                loading = false;
+                            } else {
+                                t -= changeT;
+                                //playerL.setVolume(maxvol * (1/2 * (1 - t)));
+                                //playerL.setVolume(maxvol * Math.sqrt(1/2 * (1 - t)));
+                                //playerR.setVolume(maxvol * (1/2 * (1 + t)));
+                                if (t > 0) {
+                                    playerL.setVolume(maxvol * (1/2 * (1 - t)));
+                                    playerR.setVolume(maxvol * Math.sqrt(1/2 * (1 + t)));
+                                } else {
+                                    playerL.setVolume(maxvol * Math.sqrt(1/2 * (1 - t)));
+                                    playerR.setVolume(maxvol * (1/2 * (1 + t)));
+                                }
+                            }
+                        }, 50);
+                        toggle = true;
+                    }
                 }
             }
 
