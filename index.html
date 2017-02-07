@@ -30,8 +30,11 @@
 
             var toggle = true;
 
+            var fadetime = 1000;
+
             function buttonClick() {
                 if (firstClick) {
+                    //window.location.assign(window.location.href + "?" + videoLid + "?" + videoRid);
                     document.getElementById("mainbtn").textContent = "Loading... Please Wait";
                     var tag = document.createElement('script');
                     tag.src = "https://www.youtube.com/iframe_api";
@@ -99,15 +102,9 @@
                         document.getElementById("playerL").style.visibility = "visible";
                         loadL = false;
                         bothReady();
-
-                        // player2Ready = true;
-                        // preloading2 = true;             // Flag for foreground video preloading
-                        // player2.mute();
-                        // //$( "#player2" ).hide();
-                        // player.seekTo(1);              // Start buffering and wait the event
                     }
                     else
-                        playerL.playVideo();            // If not preloading link the 2 players PLAY events
+                        playerL.playVideo();
                 }
             }
 
@@ -117,13 +114,14 @@
                     {
                         playerR.pauseVideo();
                         playerR.seekTo(0);
-                        //playerR.unMute();
+                        playerR.unMute();
+                        playerR.setVolume(0);
                         document.getElementById("playerR").style.visibility = "visible";
                         loadR = false;
                         bothReady();
                     }
                     else
-                        playerR.playVideo();            // If not preloading link the 2 players PLAY events
+                        playerR.playVideo();
                 }
             }
 
@@ -136,14 +134,39 @@
 
             function xfade() {
                 if (toggle) {
-                    playerL.mute();
-                    playerR.unMute();
+                    var volL = playerL.getVolume();
+                    var change = volL / (fadetime / 100);
+                    var i = 0;
+                    var interval = setInterval(function() {
+                        if (i >= fadetime / 100) {
+                            clearInterval(interval);
+                        } else {
+                            changeVolume(playerL, -change);
+                            changeVolume(playerR, change);
+                            i++;
+                        }
+                    }, 100);
                     toggle = false;
                 } else {
-                    playerR.mute();
-                    playerL.unMute();
+                    var volR = playerR.getVolume();
+                    var change = volR / (fadetime / 100);
+                    var i = 0;
+                    var interval = setInterval(function() {
+                        if (i >= fadetime / 100) {
+                            clearInterval(interval);
+                        } else {
+                            changeVolume(playerL, change);
+                            changeVolume(playerR, -change);
+                            i++;
+                        }
+                    }, 100);
                     toggle = true;
                 }
+            }
+
+            function changeVolume(player, change) {
+                var vol = player.getVolume();
+                player.setVolume(vol + change);
             }
 
             function stopVideo() {
