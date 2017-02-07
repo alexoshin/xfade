@@ -171,16 +171,8 @@
                                 loading = false;
                             } else {
                                 t += changeT;
-                                //playerL.setVolume(maxvol * (1/2 * (1 - t)));
-                                //playerR.setVolume(maxvol * (1/2 * (1 + t)));
-                                //playerR.setVolume(maxvol * Math.sqrt(1/2 * (1 + t)));
-                                if (t < 0) {
-                                    playerL.setVolume(maxvol * Math.sqrt(1/2 * (1 - t)));
-                                    playerR.setVolume(maxvol * (1/2 * (1 + t)));
-                                } else {
-                                    playerL.setVolume(maxvol * (1/2 * (1 - t)));
-                                    playerR.setVolume(maxvol * Math.sqrt(1/2 * (1 + t)));
-                                }
+                                playerL.setVolume(maxvol * Math.sqrt(1/2 * (1 - t)));
+                                playerR.setVolume(maxvol * Math.sqrt(1/2 * (1 + t)));
                             }
                         }, 50);
                         toggle = false;
@@ -192,16 +184,8 @@
                                 loading = false;
                             } else {
                                 t -= changeT;
-                                //playerL.setVolume(maxvol * (1/2 * (1 - t)));
-                                //playerL.setVolume(maxvol * Math.sqrt(1/2 * (1 - t)));
-                                //playerR.setVolume(maxvol * (1/2 * (1 + t)));
-                                if (t > 0) {
-                                    playerL.setVolume(maxvol * (1/2 * (1 - t)));
-                                    playerR.setVolume(maxvol * Math.sqrt(1/2 * (1 + t)));
-                                } else {
-                                    playerL.setVolume(maxvol * Math.sqrt(1/2 * (1 - t)));
-                                    playerR.setVolume(maxvol * (1/2 * (1 + t)));
-                                }
+                                playerL.setVolume(maxvol * Math.sqrt(1/2 * (1 - t)));
+                                playerR.setVolume(maxvol * Math.sqrt(1/2 * (1 + t)));
                             }
                         }, 50);
                         toggle = true;
