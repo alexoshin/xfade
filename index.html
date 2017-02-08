@@ -2,6 +2,11 @@
 <html>
     <head>
         <style>
+            .divider{
+                width:5px;
+                height:5px;
+                display:inline-block;
+            }
             body {text-align:center;}
         </style>
     </head>
@@ -21,6 +26,10 @@
 
         <section id="xfadeButtons" style="padding-top:10px;">
             <button id="xfade" onclick="xfade()" style="visibility:hidden;">Crossfade!</button>
+            <div class="divider"></div>
+            <button id="autoStartBtn" onclick="autofadeStart()" style="visibility:hidden;">Start Autofade</button>
+            <div class="divider"></div>
+            <button id="autoStopBtn" onclick="autofadeStop()" style="visibility:hidden;" disabled=true>Stop Autofade</button>
         </section>
 
         <script>
@@ -91,6 +100,10 @@
                     height: '390',
                     width: '640',
                     videoId: videoLid,
+                    playerVars: {
+                        "playlist": videoLid,
+                        "loop": 1
+                    },
                     events: {
                         'onReady': onPlayerLReady,
                         'onStateChange': onPlayerLStateChange
@@ -100,6 +113,10 @@
                     height: '390',
                     width: '640',
                     videoId: videoRid,
+                    playerVars: {
+                        "playlist": videoRid,
+                        "loop": 1
+                    },
                     events: {
                         'onReady': onPlayerRReady,
                         'onStateChange': onPlayerRStateChange
@@ -122,24 +139,40 @@
 
             function onPlayerLStateChange(event) {
                 if (event.data == YT.PlayerState.PLAYING) {
-                    if(loadL)
-                    {
+                    if (loadL) {
                         playerL.pauseVideo();
                         playerL.seekTo(0);
                         playerL.unMute();
                         document.getElementById("playerL").style.visibility = "visible";
                         loadL = false;
                         bothReady();
+                    } else {
+                        document.getElementById("mainbtn").textContent = "Pause";
+                        playing = true;
+                        playerR.playVideo();
                     }
-                    else
-                        playerL.playVideo();
+                } else if (event.data == YT.PlayerState.PAUSED) {
+                    if (!loadL && !loadR) {
+                        document.getElementById("mainbtn").textContent = "Play";
+                        playing = false;
+                        playerR.pauseVideo();
+                    }
                 }
+                // } else if (event.data == YT.PlayerState.BUFFERING) {
+                //     if (!loadL) {
+                //         playerR.pauseVideo();
+                //     }
+                // } else if (event.data == YT.PlayerState.CUED ) {
+                //     if(!loadL)
+                //         playerR.pauseVideo();
+                // } else if (event.data == YT.PlayerState.ENDED ) {
+                //     playerR.stopVideo();
+                // }
             }
 
             function onPlayerRStateChange(event) {
                 if (event.data == YT.PlayerState.PLAYING) {
-                    if(loadR)
-                    {
+                    if (loadR) {
                         playerR.pauseVideo();
                         playerR.seekTo(0);
                         playerR.unMute();
@@ -147,16 +180,36 @@
                         document.getElementById("playerR").style.visibility = "visible";
                         loadR = false;
                         bothReady();
+                    } else {
+                        document.getElementById("mainbtn").textContent = "Pause";
+                        playing = true;
+                        playerL.playVideo();
                     }
-                    else
-                        playerR.playVideo();
+                } else if (event.data == YT.PlayerState.PAUSED) {
+                    if (!loadR && !loadL) {
+                        document.getElementById("mainbtn").textContent = "Play";
+                        playing = false;
+                        playerL.pauseVideo();
+                    }
                 }
+                // } else if (event.data == YT.PlayerState.BUFFERING) {
+                //     if (!loadR) {
+                //         playerL.pauseVideo();
+                //     }
+                // } else if (event.data == YT.PlayerState.CUED ) {
+                //     if(!loadR)
+                //         playerL.pauseVideo();
+                // } else if (event.data == YT.PlayerState.ENDED ) {
+                //     playerL.stopVideo();
+                // }
             }
 
             function bothReady() {
                 if (!loadL && !loadR) {
                     document.getElementById("mainbtn").textContent = "Play";
                     document.getElementById("xfade").style.visibility = "visible";
+                    document.getElementById("autoStartBtn").style.visibility = "visible";
+                    document.getElementById("autoStopBtn").style.visibility = "visible";
                 }
             }
 
@@ -191,6 +244,23 @@
                         toggle = true;
                     }
                 }
+            }
+
+            var auto;
+            var autoInterval = 10000;
+
+            function autofadeStart() {
+                document.getElementById("autoStartBtn").disabled = true;
+                document.getElementById("autoStopBtn").disabled = false;
+                auto = setInterval(function() {
+                    xfade();
+                }, autoInterval);
+            }
+
+            function autofadeStop() {
+                document.getElementById("autoStartBtn").disabled = false;
+                document.getElementById("autoStopBtn").disabled = true;
+                clearInterval(auto);
             }
 
             function changeVolume(player, change) {
