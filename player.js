@@ -7,7 +7,7 @@ var playing = false;
 var toggle = true;
 
 var fadetime = 1000;
-var maxvol = 50;
+var maxVol;
 var t = -1.0;
 
 var loading = false;
@@ -93,6 +93,7 @@ var loadL = false;
 var loadR = false;
 function onPlayerLReady(event) {
     loadL = true;
+    maxVol = playerL.getVolume();
     playerL.mute();
     playerL.seekTo(1);
 }
@@ -175,6 +176,7 @@ function bothReady() {
         document.getElementById("xfade").style.visibility = "visible";
         document.getElementById("autoStartBtn").style.visibility = "visible";
         document.getElementById("autoStopBtn").style.visibility = "visible";
+        document.getElementById("volumeSlider").style.visibility = "visible";
     }
 }
 
@@ -189,8 +191,8 @@ function xfade() {
                     loading = false;
                 } else {
                     t += changeT;
-                    playerL.setVolume(maxvol * Math.sqrt(1/2 * (1 - t)));
-                    playerR.setVolume(maxvol * Math.sqrt(1/2 * (1 + t)));
+                    playerL.setVolume(maxVol * Math.sqrt(1/2 * (1 - t)));
+                    playerR.setVolume(maxVol * Math.sqrt(1/2 * (1 + t)));
                 }
             }, 50);
             toggle = false;
@@ -202,12 +204,21 @@ function xfade() {
                     loading = false;
                 } else {
                     t -= changeT;
-                    playerL.setVolume(maxvol * Math.sqrt(1/2 * (1 - t)));
-                    playerR.setVolume(maxvol * Math.sqrt(1/2 * (1 + t)));
+                    playerL.setVolume(maxVol * Math.sqrt(1/2 * (1 - t)));
+                    playerR.setVolume(maxVol * Math.sqrt(1/2 * (1 + t)));
                 }
             }, 50);
             toggle = true;
         }
+    }
+}
+
+function changeVolume(newVol) {
+    maxVol = newVol;
+    if (toggle) {
+        playerL.setVolume(newVol);
+    } else {
+        playerR.setVolume(newVol);
     }
 }
 
