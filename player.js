@@ -4,7 +4,7 @@ var videoRid;
 var firstClick = true;
 var playing = false;
 
-var toggle = true;
+var leftPlaying = true;
 
 var fadetime = 1000;
 var maxVol;
@@ -23,17 +23,12 @@ function buttonClick() {
         var firstScriptTag = document.getElementsByTagName('script')[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
         firstClick = false;
-    } else if (!loadL && !loadR) {
+        loading = true;
+    } else if (!loading) {
         if (playing) {
-            document.getElementById("mainbtn").textContent = "Play";
-            playerL.pauseVideo();
-            playerR.pauseVideo();
-            playing = false;
+            pause(playerL);
         } else {
-            document.getElementById("mainbtn").textContent = "Pause";
-            playerL.playVideo();
-            playerR.playVideo();
-            playing = true;
+            play(playerL);
         }
     }
 }
@@ -66,8 +61,8 @@ function onYouTubeIframeAPIReady() {
         width: '640',
         videoId: videoLid,
         playerVars: {
-            "playlist": videoLid,
-            "loop": 1
+            //"playlist": videoLid,
+            //"loop": 1
         },
         events: {
             'onReady': onPlayerLReady,
@@ -79,8 +74,8 @@ function onYouTubeIframeAPIReady() {
         width: '640',
         videoId: videoRid,
         playerVars: {
-            "playlist": videoRid,
-            "loop": 1
+            //"playlist": videoRid,
+            //"loop": 1
         },
         events: {
             'onReady': onPlayerRReady,
@@ -89,11 +84,24 @@ function onYouTubeIframeAPIReady() {
     });
 }
 
+function play(player) {
+    player.playVideo();
+    document.getElementById("mainbtn").textContent = "Pause";
+    playing = true;
+}
+
+function pause(player) {
+    player.pauseVideo();
+    document.getElementById("mainbtn").textContent = "Play";
+    playing = false;
+}
+
 var loadL = false;
 var loadR = false;
 function onPlayerLReady(event) {
     loadL = true;
     maxVol = playerL.getVolume();
+    document.getElementById("volumeSlider").value = maxVol;
     playerL.mute();
     playerL.seekTo(1);
 }
@@ -105,40 +113,45 @@ function onPlayerRReady(event) {
 
 function onPlayerLStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING) {
-        if (loadL) {
+        if (loading && loadL) {
             playerL.pauseVideo();
             playerL.seekTo(0);
             playerL.unMute();
             document.getElementById("playerL").style.visibility = "visible";
             loadL = false;
             bothReady();
-        } else {
-            document.getElementById("mainbtn").textContent = "Pause";
-            playing = true;
-            playerR.playVideo();
+        } else if (!loading) {
+            loadL = false;
+            play(playerR);
         }
     } else if (event.data == YT.PlayerState.PAUSED) {
-        if (!loadL && !loadR) {
-            document.getElementById("mainbtn").textContent = "Play";
-            playing = false;
-            playerR.pauseVideo();
+        if (!loading) {
+            if (!loadR) {
+                pause(playerR);
+            }
         }
+    } else if (event.data == YT.PlayerState.BUFFERING) {
+        if (!loading) {
+            if (!loadR) {
+                loadL = true;
+                playerR.seekTo(playerL.getCurrentTime());
+            }
+        }
+    } else if (event.data == YT.PlayerState.CUED) {
+        if(!loading) {
+            if (!loadR) {
+                pause(playerR);
+            }
+        }
+
+    } else if (event.data == YT.PlayerState.ENDED) {
+        loop();
     }
-    // } else if (event.data == YT.PlayerState.BUFFERING) {
-    //     if (!loadL) {
-    //         playerR.pauseVideo();
-    //     }
-    // } else if (event.data == YT.PlayerState.CUED ) {
-    //     if(!loadL)
-    //         playerR.pauseVideo();
-    // } else if (event.data == YT.PlayerState.ENDED ) {
-    //     playerR.stopVideo();
-    // }
 }
 
 function onPlayerRStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING) {
-        if (loadR) {
+        if (loading && loadR) {
             playerR.pauseVideo();
             playerR.seekTo(0);
             playerR.unMute();
@@ -146,28 +159,38 @@ function onPlayerRStateChange(event) {
             document.getElementById("playerR").style.visibility = "visible";
             loadR = false;
             bothReady();
-        } else {
-            document.getElementById("mainbtn").textContent = "Pause";
-            playing = true;
-            playerL.playVideo();
+        } else if (!loading) {
+            loadR = false;
+            play(playerL);
         }
     } else if (event.data == YT.PlayerState.PAUSED) {
-        if (!loadR && !loadL) {
-            document.getElementById("mainbtn").textContent = "Play";
-            playing = false;
-            playerL.pauseVideo();
+        if (!loading) {
+            if (!loadL) {
+                pause(playerL);
+            }
         }
+    } else if (event.data == YT.PlayerState.BUFFERING) {
+        if (!loading) {
+            if (!loadL) {
+                loadR = true;
+                playerL.seekTo(playerR.getCurrentTime());
+            }
+        }
+    } else if (event.data == YT.PlayerState.CUED) {
+        if(!loading) {
+            if (!loadL) {
+                pause(playerL);
+            }
+        }
+    } else if (event.data == YT.PlayerState.ENDED) {
+        loop();
     }
-    // } else if (event.data == YT.PlayerState.BUFFERING) {
-    //     if (!loadR) {
-    //         playerL.pauseVideo();
-    //     }
-    // } else if (event.data == YT.PlayerState.CUED ) {
-    //     if(!loadR)
-    //         playerL.pauseVideo();
-    // } else if (event.data == YT.PlayerState.ENDED ) {
-    //     playerL.stopVideo();
-    // }
+}
+
+function loop() {
+    playerL.seekTo(0);
+    playerR.seekTo(0);
+    play(playerL);
 }
 
 function bothReady() {
@@ -177,45 +200,47 @@ function bothReady() {
         document.getElementById("autoStartBtn").style.visibility = "visible";
         document.getElementById("autoStopBtn").style.visibility = "visible";
         document.getElementById("volumeSlider").style.visibility = "visible";
+        loading = false;
     }
 }
 
+var fading = false;
 function xfade() {
-    if (!loading) {
-        loading = true;
-        if (toggle) {
+    if (!fading) {
+        fading = true;
+        if (leftPlaying) {
             var changeT = 2/(fadetime/50);
             var interval = setInterval(function() {
                 if (t >= 1) {
                     clearInterval(interval);
-                    loading = false;
+                    fading = false;
                 } else {
                     t += changeT;
                     playerL.setVolume(maxVol * Math.sqrt(1/2 * (1 - t)));
                     playerR.setVolume(maxVol * Math.sqrt(1/2 * (1 + t)));
                 }
             }, 50);
-            toggle = false;
+            leftPlaying = false;
         } else {
             var changeT = 2/(fadetime/50);
             var interval = setInterval(function() {
                 if (t <= -1) {
                     clearInterval(interval);
-                    loading = false;
+                    fading = false;
                 } else {
                     t -= changeT;
                     playerL.setVolume(maxVol * Math.sqrt(1/2 * (1 - t)));
                     playerR.setVolume(maxVol * Math.sqrt(1/2 * (1 + t)));
                 }
             }, 50);
-            toggle = true;
+            leftPlaying = true;
         }
     }
 }
 
 function changeVolume(newVol) {
     maxVol = newVol;
-    if (toggle) {
+    if (leftPlaying) {
         playerL.setVolume(newVol);
     } else {
         playerR.setVolume(newVol);
