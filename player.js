@@ -60,10 +60,6 @@ function onYouTubeIframeAPIReady() {
         height: '390',
         width: '640',
         videoId: videoLid,
-        playerVars: {
-            //"playlist": videoLid,
-            //"loop": 1
-        },
         events: {
             'onReady': onPlayerLReady,
             'onStateChange': onPlayerLStateChange
@@ -73,10 +69,6 @@ function onYouTubeIframeAPIReady() {
         height: '390',
         width: '640',
         videoId: videoRid,
-        playerVars: {
-            //"playlist": videoRid,
-            //"loop": 1
-        },
         events: {
             'onReady': onPlayerRReady,
             'onStateChange': onPlayerRStateChange
@@ -196,10 +188,11 @@ function loop() {
 function bothReady() {
     if (!loadL && !loadR) {
         document.getElementById("mainbtn").textContent = "Play";
-        document.getElementById("xfade").style.visibility = "visible";
-        document.getElementById("autoStartBtn").style.visibility = "visible";
-        document.getElementById("autoStopBtn").style.visibility = "visible";
+        document.getElementById("xfadeButtons").style.display = "block";
+        document.getElementById("progress").style.display = "block";
+        document.getElementById("volumeSlider").style.display = "inline";
         document.getElementById("volumeSlider").style.visibility = "visible";
+        startVolumeListener();
         loading = false;
     }
 }
@@ -208,16 +201,18 @@ var fading = false;
 function xfade() {
     if (!fading) {
         fading = true;
+        endVolumeListener();
         if (leftPlaying) {
             var changeT = 2/(fadetime/50);
             var interval = setInterval(function() {
                 if (t >= 1) {
                     clearInterval(interval);
+                    startVolumeListener();
                     fading = false;
                 } else {
+                    playerL.setVolume(Math.floor(maxVol * Math.sqrt(1/2 * (1 - t))));
+                    playerR.setVolume(Math.floor(maxVol * Math.sqrt(1/2 * (1 + t))));
                     t += changeT;
-                    playerL.setVolume(maxVol * Math.sqrt(1/2 * (1 - t)));
-                    playerR.setVolume(maxVol * Math.sqrt(1/2 * (1 + t)));
                 }
             }, 50);
             leftPlaying = false;
@@ -226,11 +221,12 @@ function xfade() {
             var interval = setInterval(function() {
                 if (t <= -1) {
                     clearInterval(interval);
+                    startVolumeListener();
                     fading = false;
                 } else {
+                    playerL.setVolume(Math.floor(maxVol * Math.sqrt(1/2 * (1 - t))));
+                    playerR.setVolume(Math.floor(maxVol * Math.sqrt(1/2 * (1 + t))));
                     t -= changeT;
-                    playerL.setVolume(maxVol * Math.sqrt(1/2 * (1 - t)));
-                    playerR.setVolume(maxVol * Math.sqrt(1/2 * (1 + t)));
                 }
             }, 50);
             leftPlaying = true;
@@ -245,6 +241,22 @@ function changeVolume(newVol) {
     } else {
         playerR.setVolume(newVol);
     }
+}
+
+var volListener;
+function startVolumeListener() {
+    volListener = setInterval(function() {
+        if (leftPlaying) {
+            maxVol = playerL.getVolume();
+            document.getElementById("volumeSlider").value = maxVol;
+        } else {
+            maxVol = playerR.getVolume();
+            document.getElementById("volumeSlider").value = maxVol;
+        }
+    }, 100);
+}
+function endVolumeListener() {
+    clearInterval(volListener);
 }
 
 var auto;
@@ -262,4 +274,9 @@ function autofadeStop() {
     document.getElementById("autoStartBtn").disabled = false;
     document.getElementById("autoStopBtn").disabled = true;
     clearInterval(auto);
+}
+
+function progressClicked(event) {
+    var rect = document.getElementById("progress-border").getClientRects()[0];
+    console.log(event.clientX - Math.ceil(rect.left));
 }
