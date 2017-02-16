@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="../css/style.css">
+    </head>
+    <body>
+        <section id="videos">
+            <div id="playerL" style="visibility:hidden;"></div>
+            <div id="playerR" style="visibility:hidden;"></div>
+        </section>
+
+        <section id="playback">
+            <button id="leftbutton" onclick="alight()">Alight</button>
+            <button id="mainbtn" onclick="buttonClick()" disabled=true>Click to Start</button>
+            <button id="rightbutton" onclick="duskfalls()">Dusk Falls</button>
+            <input type="range" id="volumeSlider" oninput="changeVolume(this.value)" min="0" max="100" step="1" style="visibility:hidden; display:none"></input>
+        </section>
+
+        <section></section>
+
+        <section class="center" id="xfadeButtons" style="display:none">
+            <button id="xfade" onclick="xfade()">Crossfade!</button>
+            <div class="divider"></div>
+            <button id="autoStartBtn" onclick="autofadeStart()">Start Autofade</button>
+            <div class="divider"></div>
+            <button id="autoStopBtn" onclick="autofadeStop()" disabled=true>Stop Autofade</button>
+        </section>
+
+        <section class="center" id="progress" style="display:none">
+            <div class="progress_border" id="progress-border" onclick="progressClicked(event)">
+                <div class="progress_bar">
+                    <p class="progress_time">Test</p>
+                </div>
+            </div>
+        </section>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="../js/youtubeplayer.js"></script>
+    </body>
+</html>
