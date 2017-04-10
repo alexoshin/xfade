@@ -33,6 +33,10 @@ function buttonClick() {
     }
 }
 
+function submitClicked() {
+    alert("yes");
+}
+
 function alight() {
     videoLid = 'Xb3UUVVLl8E';
     videoRid = 'xvOy3sjQUe8';
