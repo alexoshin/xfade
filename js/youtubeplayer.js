@@ -14,16 +14,22 @@ var loading = false;
 
 function buttonClick() {
     if (firstClick) {
-        //window.location.assign(window.location.href + "?" + videoLid + "?" + videoRid);
-        document.getElementById("leftbutton").style.display = "none";
-        document.getElementById("rightbutton").style.display = "none";
-        document.getElementById("mainbtn").textContent = "Loading... Please Wait";
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-        firstClick = false;
-        loading = true;
+        videoLid = document.getElementById("leftinput").value;
+        videoRid = document.getElementById("rightinput").value;
+        if (videoLid == "") {
+            alert("Please enter a video id for the first video.");
+        } else if (videoRid == "") {
+            alert("Please enter a video id for the second video.");
+        } else {
+            document.getElementById("input").style.display = "none";
+            document.getElementById("mainbtn").textContent = "Loading... Please Wait";
+            var tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+            firstClick = false;
+            loading = true;
+        }
     } else if (!loading) {
         if (playing) {
             pause(playerL);
@@ -33,29 +39,11 @@ function buttonClick() {
     }
 }
 
-function submitClicked() {
-    alert("yes");
+function exampleClick() {
+    document.getElementById("leftinput").value = "BdrtNio7t0Y";
+    document.getElementById("rightinput").value = "Bx_rGx2MKvY";
 }
 
-function alight() {
-    videoLid = 'Xb3UUVVLl8E';
-    videoRid = 'xvOy3sjQUe8';
-    document.getElementById("leftbutton").textContent = "Songs set to Alight";
-    document.getElementById("leftbutton").disabled = true;
-    document.getElementById("rightbutton").textContent = "Dusk Falls";
-    document.getElementById("rightbutton").disabled = false;
-    document.getElementById("mainbtn").disabled = false;
-}
-
-function duskfalls() {
-    videoLid = 'BdrtNio7t0Y';
-    videoRid = 'Bx_rGx2MKvY';
-    document.getElementById("rightbutton").textContent = "Songs set to Dusk Falls";
-    document.getElementById("rightbutton").disabled = true;
-    document.getElementById("leftbutton").textContent = "Alight";
-    document.getElementById("leftbutton").disabled = false;
-    document.getElementById("mainbtn").disabled = false;
-}
 
 var playerL;
 var playerR;
@@ -193,7 +181,7 @@ function bothReady() {
     if (!loadL && !loadR) {
         document.getElementById("mainbtn").textContent = "Play";
         document.getElementById("xfadeButtons").style.display = "block";
-        document.getElementById("progress").style.display = "block";
+        //document.getElementById("progress").style.display = "block";
         document.getElementById("volumeSlider").style.display = "inline";
         document.getElementById("volumeSlider").style.visibility = "visible";
         startVolumeListener();
@@ -280,7 +268,7 @@ function autofadeStop() {
     clearInterval(auto);
 }
 
-function progressClicked(event) {
-    var rect = document.getElementById("progress-border").getClientRects()[0];
-    console.log(event.clientX - Math.ceil(rect.left));
-}
+// function progressClicked(event) {
+//     var rect = document.getElementById("progress-border").getClientRects()[0];
+//     console.log(event.clientX - Math.ceil(rect.left));
+// }
