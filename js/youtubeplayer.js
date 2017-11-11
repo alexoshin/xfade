@@ -211,8 +211,8 @@ function xfade() {
                     startVolumeListener();
                     fading = false;
                 } else {
-                    playerL.setVolume(Math.floor(maxVol * Math.sqrt(1/2 * (1 - t))));
-                    playerR.setVolume(Math.floor(maxVol * Math.sqrt(1/2 * (1 + t))));
+                    playerL.setVolume(Math.round(maxVol * Math.sqrt(1/2 * (1 - t))));
+                    playerR.setVolume(Math.round(maxVol * Math.sqrt(1/2 * (1 + t))));
                     t += changeT;
                 }
             }, 50);
@@ -225,8 +225,8 @@ function xfade() {
                     startVolumeListener();
                     fading = false;
                 } else {
-                    playerL.setVolume(Math.floor(maxVol * Math.sqrt(1/2 * (1 - t))));
-                    playerR.setVolume(Math.floor(maxVol * Math.sqrt(1/2 * (1 + t))));
+                    playerL.setVolume(Math.round(maxVol * Math.sqrt(1/2 * (1 - t))));
+                    playerR.setVolume(Math.round(maxVol * Math.sqrt(1/2 * (1 + t))));
                     t -= changeT;
                 }
             }, 50);
@@ -281,3 +281,7 @@ function autofadeStop() {
 //     var rect = document.getElementById("progress-border").getClientRects()[0];
 //     console.log(event.clientX - Math.ceil(rect.left));
 // }
+
+function testClick() {
+    alert(maxVol)
+}
