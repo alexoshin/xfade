@@ -9,19 +9,19 @@
             <div id="playerR" style="visibility:hidden;"></div>
         </section>
 
-        <form id="input" onsubmit="return false">
-            First Video ID:<div class="divider"></div><input type="text" id="leftinput" value="ohAy4fJ-fKg"><br>
-            Second Video ID:<div class="divider"></div><input type="text" id="rightinput" value="lWalw9iV-so"><br>
-        </form>
+        <!-- <form id="input" onsubmit="return false">
+            First Video ID:<div class="divider"></div><input type="text" id="leftinput"><br>
+            Second Video ID:<div class="divider"></div><input type="text" id="rightinput"><br>
+            <button id="example" onclick="exampleClick()">Click for example IDs</button>
+        </form> -->
 
-        <section id="offset">
-            <!-- Starting Time:<div class="divider"></div><input type="time" id="leftoffset" min="0" step="1"></input> -->
-
-        </section>
+        <!-- <section id="offset">
+            Starting Time:<div class="divider"></div><input type="time" id="leftoffset" min="0" step="1"></input>
+        </section> -->
 
         <section id="playback">
             <!-- <button id="leftbutton" onclick="alight()">Alight</button> -->
-            <button id="mainbtn" onclick="buttonClick()">Click to Start</button><br>
+            <button id="mainbtn" style="visibility:hidden;" onclick="buttonClick()"></button><br>
             <!-- <button id="rightbutton" onclick="duskfalls()">Dusk Falls</button> -->
             <div id="volumeText" style="visibility:hidden; display:none">Volume:</div><div class="divider"></div><input type="range" id="volumeSlider" oninput="changeVolume(this.value)" min="0" max="100" step="1" style="visibility:hidden; display:none"></input>
         </section>
@@ -35,17 +35,23 @@
             <button id="autoStopBtn" onclick="autofadeStop()" disabled=true>Stop Autofade</button> -->
         </section>
 
-    <!--
-        <section class="center" id="progress" style="display:none">
+        <!-- <section class="center" id="progress" style="display:none">
             <div class="progress_border" id="progress-border" onclick="progressClicked(event)">
                 <div class="progress_bar">
                     <p class="progress_time">Test</p>
                 </div>
             </div>
+        </section> -->
+
+        <section>
+            <H5>Contact me if the links are broken!<br>alexoshin@gatech.edu</H5>
+            <H6><span data-descr="Any videos used as part of this demo are copyright their respective claimholders. xfade was developed for non-profit, educational purposes only.">Disclaimer</span></H6>
         </section>
-    -->
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="../js/youtubeplayer.js"></script>
+        <script>
+            window.onload = examplePageStart()
+        </script>
     </body>
 </html>

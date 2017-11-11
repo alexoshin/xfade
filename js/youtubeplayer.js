@@ -39,11 +39,18 @@ function buttonClick() {
     }
 }
 
-function exampleClick() {
-    document.getElementById("leftinput").value = "BdrtNio7t0Y";
-    document.getElementById("rightinput").value = "Bx_rGx2MKvY";
+function examplePageStart() {
+    videoLid = "ohAy4fJ-fKg"
+    videoRid = "lWalw9iV-so"
+    document.getElementById("mainbtn").textContent = "Loading... Please Wait";
+    document.getElementById("mainbtn").style.visibility = "visible";
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    firstClick = false;
+    loading = true;
 }
-
 
 var playerL;
 var playerR;
@@ -182,6 +189,8 @@ function bothReady() {
         document.getElementById("mainbtn").textContent = "Play";
         document.getElementById("xfadeButtons").style.display = "block";
         //document.getElementById("progress").style.display = "block";
+        document.getElementById("volumeText").style.display = "inline";
+        document.getElementById("volumeText").style.visibility = "visible";
         document.getElementById("volumeSlider").style.display = "inline";
         document.getElementById("volumeSlider").style.visibility = "visible";
         startVolumeListener();
