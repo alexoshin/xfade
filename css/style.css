@@ -1,9 +1,9 @@
 :root {
-    --main-bg-color: #0E0B16;
-    --text-color: #C5C6C7;
-    --main-color: #66FCF1;
-    --secondary-bg-color: #1F2833;
-    --secondary-color: #45A29E;
+    --main-bg-color: #0E0B16; /*blackish*/
+    --secondary-bg-color: #1F2833; /*gray*/
+    --text-color: #C5C6C7; /*off-white*/
+    --main-color: #66FCF1; /*light blue*/
+    --secondary-color: #45A29E; /*darker blue*/
 }
 
 body {
@@ -25,36 +25,38 @@ p {
     padding: 10px;
 }
 
-.center{
+.center {
     margin:auto;
     width:100%;
     padding-top:10px;
 }
-.divider{
+.divider {
     width:5px;
     height:5px;
     display:inline-block;
 }
-.progress_border{
-    border:1px solid;
-    margin:auto;
-    width:50%;
-    height:20px;
+
+.header {
+    position: relative;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background-color: var(--main-bg-color);
+    color: var(--text-color);
+    text-align: center;
 }
-.progress_bar{
-    display:none;
-    position:relative;
-    top:-4px;
-    left:0px;
-    background:black;
-    height:28px;
-    width:3px;
-}
-.progress_time{
-    position:relative;
-    top:25px;
-    left:-10px;
-    margin-top:0px;
+
+.footer {
+    position: fixed;
+    padding-bottom: 20px;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: var(--main-bg-color);
+    color: var(--text-color);
+    text-align: center;
 }
 
 .tooltip {
@@ -95,3 +97,25 @@ p {
     border-style: solid;
     border-color: var(--secondary-bg-color) transparent transparent transparent;
 }
+
+/*.progress_border{
+    border:1px solid;
+    margin:auto;
+    width:50%;
+    height:20px;
+}
+.progress_bar{
+    display:none;
+    position:relative;
+    top:-4px;
+    left:0px;
+    background:black;
+    height:28px;
+    width:3px;
+}
+.progress_time{
+    position:relative;
+    top:25px;
+    left:-10px;
+    margin-top:0px;
+}*/
