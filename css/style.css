@@ -1,3 +1,20 @@
+:root {
+    --main-bg-color: #0E0B16;
+    --main-text-color: #C5C6C7;
+    --header-text-color: #66FCF1;
+}
+
+body {
+    background: var(--main-bg-color);
+    color: var(--main-text-color);
+    font-family: 'Open Sans', sans-serif;
+    text-align:center;
+}
+
+h1 {
+    color: var(--header-text-color);
+}
+
 .center{
     margin:auto;
     width:100%;
@@ -29,8 +46,6 @@
     left:-10px;
     margin-top:0px;
 }
-
-body {text-align:center;}
 
 span[data-descr] {
     position:relative;
