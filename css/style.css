@@ -1,26 +1,26 @@
 :root {
     --main-bg-color: #0E0B16;
-    --main-text-color: #C5C6C7;
-    --header-text-color: #66FCF1;
+    --text-color: #C5C6C7;
+    --main-color: #66FCF1;
     --secondary-bg-color: #1F2833;
-    --secondary-text-color: #45A29E;
+    --secondary-color: #45A29E;
 }
 
 body {
     background: var(--main-bg-color);
-    color: var(--main-text-color);
+    color: var(--text-color);
     font-family: 'Open Sans', sans-serif;
     text-align:center;
 }
 
 h1 {
-    color: var(--header-text-color);
+    color: var(--main-color);
     font-size: 34px;
     padding-top: 40px;
 }
 
 p {
-    color: var(--main-text-color);
+    color: var(--text-color);
     font-size: 20px;
     padding: 10px;
 }
@@ -57,24 +57,41 @@ p {
     margin-top:0px;
 }
 
-span[data-descr] {
-    position:relative;
-    text-decoration:underline;
-    color: #00F;
-    cursor: help;
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px solid var(--secondary-color);
 }
 
-span[data-descr]:hover::after {
-    content: attr(data-descr);
+.tooltip .tooltiptext {
     position: absolute;
-    left: 0;
-    top: 24px;
-    min-width: 200px;
-    border: 1px #aaaaaa solid;
-    border-radius: 10px;
-    background-color: #ffffcc;
-    padding: 12px;
-    color: #000000;
-    font-size: 14px;
+    visibility: hidden;
+    width: 200px;
+    background-color: var(--secondary-bg-color);
+    color: var(--text-color);
+    text-align: center;
+    border-radius: 6px;
+    padding: 10px 0;
+    margin-left: -100px; /*width/2*/
     z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+.tooltip .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -10px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: var(--secondary-bg-color) transparent transparent transparent;
 }
