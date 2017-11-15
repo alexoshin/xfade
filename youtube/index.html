@@ -23,7 +23,7 @@
         </form>
 
         <section id="playback">
-            <button id="mainbtn" onclick="buttonClick()">Click to Start</button><br>
+            <button class="button" id="mainbtn" onclick="buttonClick()">Click to Start</button><br>
             <div id="slidecontainer">
                 <input type="range" id="volumeSlider" class="slider" oninput="changeVolume(this.value)" min="0" max="100" step="1" style="visibility:hidden; display:none"></input>
             </div>
@@ -32,7 +32,7 @@
         <section></section>
 
         <section class="center" id="xfadeButtons" style="display:none">
-            <button id="xfade" onclick="xfade()">xfade</button><br>
+            <button class="button" id="xfade" onclick="xfade()">xfade</button><br>
         </section>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>

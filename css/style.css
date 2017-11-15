@@ -8,6 +8,10 @@
 }
 
 /* Some general style definitions */
+html {
+    height: 100%;
+    width: 100%;
+}
 body {
     background: var(--main-bg-color);
     color: var(--text-color);
@@ -45,13 +49,42 @@ p {
     text-align: center;
 }
 .footer {
-    position: fixed;
+    position: relative;
     padding-bottom: 20px;
     left: 0;
     bottom: 0;
     width: 100%;
     color: var(--text-color);
     text-align: center;
+}
+
+/* Definitions for buttons */
+.button {
+    background-color: #1F2833;
+    color: #C5C6C7;
+    border: 2px solid #66FCF1;
+    border-radius: 4px;
+    padding: 15px;
+    min-width: 80px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    opacity: 1;
+    -webkit-transition: background-color .3s linear, color .3s;
+    transition: background-color .3s linear, color .3s;
+}
+.button:hover {
+    background-color: #45A29E;
+    color: #1F2833;
+}
+.button:focus {
+    outline: none;
+}
+.button:active {
+    opacity: .7;
 }
 
 /* Definitions used for gradient effect */
@@ -72,10 +105,18 @@ p {
     left: 0;
 }
 .gradientLeft {
-    background: -webkit-linear-gradient(left, var(--secondary-bg-color), var(--main-bg-color));
+    /*background-color: var(--main-bg-color);*/
+    background: -webkit-linear-gradient(right, var(--main-bg-color), var(--secondary-bg-color));
+    /*background: -moz-linear-gradient(right, var(--main-bg-color), var(--secondary-bg-color));*/
+    /*background: -ms-linear-gradient(right, var(--main-bg-color), var(--secondary-bg-color));*/
+    /*background: linear-gradient(left, var(--secondary-bg-color), var(--main-bg-color));*/
 }
 .gradientRight {
+    /*background-color: var(--main-bg-color);*/
     background: -webkit-linear-gradient(left, var(--main-bg-color), var(--secondary-bg-color));
+    /*background: -moz-linear-gradient(left, var(--main-bg-color), var(--secondary-bg-color));*/
+    /*background: -ms-linear-gradient(left, var(--main-bg-color), var(--secondary-bg-color));*/
+    /*background: linear-gradient(left, var(--main-bg-color), var(--secondary-bg-color));*/
 }
 
 /* Defines slider and related classes (used for volume slider) */
