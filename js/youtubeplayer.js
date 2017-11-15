@@ -204,6 +204,7 @@ function xfade() {
         fading = true;
         endVolumeListener();
         if (leftPlaying) {
+            $("#back1").animate({opacity: 0}, 1000);
             var changeT = 2/(fadetime/50);
             var interval = setInterval(function() {
                 if (t >= 1) {
@@ -218,6 +219,7 @@ function xfade() {
             }, 50);
             leftPlaying = false;
         } else {
+            $("#back1").animate({opacity: 1}, 1000);
             var changeT = 2/(fadetime/50);
             var interval = setInterval(function() {
                 if (t <= -1) {
@@ -258,30 +260,4 @@ function startVolumeListener() {
 }
 function endVolumeListener() {
     clearInterval(volListener);
-}
-
-var auto;
-var autoInterval = 10000;
-
-function autofadeStart() {
-    document.getElementById("autoStartBtn").disabled = true;
-    document.getElementById("autoStopBtn").disabled = false;
-    auto = setInterval(function() {
-        xfade();
-    }, autoInterval);
-}
-
-function autofadeStop() {
-    document.getElementById("autoStartBtn").disabled = false;
-    document.getElementById("autoStopBtn").disabled = true;
-    clearInterval(auto);
-}
-
-// function progressClicked(event) {
-//     var rect = document.getElementById("progress-border").getClientRects()[0];
-//     console.log(event.clientX - Math.ceil(rect.left));
-// }
-
-function testClick() {
-    alert(maxVol)
 }

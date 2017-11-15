@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>xfade</title>
+        <title>xfade Youtube</title>
         <link rel="stylesheet" href="../css/style.css">
     </head>
     <body>
+        <div id="back1" class="gradientLeft"></div>
+        <div id="back2" class="gradientRight"></div>
+
         <section>
             <div class="header"></div>
         </section>
@@ -19,16 +22,8 @@
             Second Video ID:<div class="divider"></div><input type="text" id="rightinput" value="lWalw9iV-so"><br>
         </form>
 
-        <section id="offset">
-            <!-- Starting Time:<div class="divider"></div><input type="time" id="leftoffset" min="0" step="1"></input> -->
-
-        </section>
-
         <section id="playback">
-            <!-- <button id="leftbutton" onclick="alight()">Alight</button> -->
             <button id="mainbtn" onclick="buttonClick()">Click to Start</button><br>
-            <!-- <button id="rightbutton" onclick="duskfalls()">Dusk Falls</button> -->
-            <!-- <div id="volumeText" style="visibility:hidden; display:none">Volume:</div><div class="divider"></div><input type="range" id="volumeSlider" oninput="changeVolume(this.value)" min="0" max="100" step="1" style="visibility:hidden; display:none"></input> -->
             <div id="slidecontainer">
                 <input type="range" id="volumeSlider" class="slider" oninput="changeVolume(this.value)" min="0" max="100" step="1" style="visibility:hidden; display:none"></input>
             </div>
@@ -38,20 +33,7 @@
 
         <section class="center" id="xfadeButtons" style="display:none">
             <button id="xfade" onclick="xfade()">xfade</button><br>
-            <!-- <button id="autoStartBtn" onclick="autofadeStart()">Start Autofade</button>
-            <div class="divider"></div>
-            <button id="autoStopBtn" onclick="autofadeStop()" disabled=true>Stop Autofade</button> -->
         </section>
-
-    <!--
-        <section class="center" id="progress" style="display:none">
-            <div class="progress_border" id="progress-border" onclick="progressClicked(event)">
-                <div class="progress_bar">
-                    <p class="progress_time">Test</p>
-                </div>
-            </div>
-        </section>
-    -->
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="../js/youtubeplayer.js"></script>
