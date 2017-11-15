@@ -189,8 +189,8 @@ function bothReady() {
         document.getElementById("mainbtn").textContent = "Play";
         document.getElementById("xfadeButtons").style.display = "block";
         //document.getElementById("progress").style.display = "block";
-        document.getElementById("volumeText").style.display = "inline";
-        document.getElementById("volumeText").style.visibility = "visible";
+        // document.getElementById("volumeText").style.display = "inline";
+        // document.getElementById("volumeText").style.visibility = "visible";
         document.getElementById("volumeSlider").style.display = "inline";
         document.getElementById("volumeSlider").style.visibility = "visible";
         startVolumeListener();

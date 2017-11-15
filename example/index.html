@@ -8,7 +8,7 @@
         <section>
             <div class="header"></div>
         </section>
-        
+
         <section id="videos">
             <div id="playerL" style="visibility:hidden;"></div>
             <div id="playerR" style="visibility:hidden;"></div>
@@ -28,7 +28,10 @@
             <!-- <button id="leftbutton" onclick="alight()">Alight</button> -->
             <button id="mainbtn" style="visibility:hidden;" onclick="buttonClick()"></button><br>
             <!-- <button id="rightbutton" onclick="duskfalls()">Dusk Falls</button> -->
-            <div id="volumeText" style="visibility:hidden; display:none">Volume:</div><div class="divider"></div><input type="range" id="volumeSlider" oninput="changeVolume(this.value)" min="0" max="100" step="1" style="visibility:hidden; display:none"></input>
+            <!-- <div id="volumeText" style="visibility:hidden; display:none">Volume:</div><div class="divider"></div><input type="range" id="volumeSlider" oninput="changeVolume(this.value)" min="0" max="100" step="1" style="visibility:hidden; display:none"></input> -->
+            <div id="slidecontainer">
+                <input type="range" id="volumeSlider" class="slider" oninput="changeVolume(this.value)" min="0" max="100" step="1" style="visibility:hidden; display:none"></input>
+            </div>
         </section>
 
         <section></section>

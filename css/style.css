@@ -98,24 +98,91 @@ p {
     border-color: var(--secondary-bg-color) transparent transparent transparent;
 }
 
-/*.progress_border{
-    border:1px solid;
-    margin:auto;
-    width:50%;
-    height:20px;
+#slidecontainer {
+    width: 100%;
+    padding: 10px 0;
 }
-.progress_bar{
-    display:none;
-    position:relative;
-    top:-4px;
-    left:0px;
-    background:black;
-    height:28px;
-    width:3px;
+.slider {
+    -webkit-appearance: none;
+    width: 300px;
+    border: 1px solid var(--main-bg-color);
+    opacity: .7;
+    -webkit-transition: opacity .2s;
+    -moz-transition: opacity .2s;
+    -o-transition: opacity .2s;
+    transition: opacity .2s;
 }
-.progress_time{
-    position:relative;
-    top:25px;
-    left:-10px;
-    margin-top:0px;
-}*/
+.slider:hover {
+    opacity: 1;
+}
+.slider:active {
+    opacity: 1;
+}
+.slider:focus {
+    outline: none;
+}
+
+.slider::-webkit-slider-runnable-track {
+    width: 300px;
+    height: 5px;
+    background: var(--text-color);
+    border: none;
+    border-radius: 3px;
+}
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 19px;
+    width: 19px;
+    border-radius: 40%;
+    background: var(--main-color);
+    margin-top: -7px;
+    cursor: pointer;
+}
+
+.slider::-moz-range-track {
+    width: 300px;
+    height: 5px;
+    background: var(--text-color);
+    border: none;
+    border-radius: 3px;
+}
+.slider::-moz-range-thumb {
+    border: none;
+    height: 19px;
+    width: 19px;
+    border-radius: 40%;
+    background: var(--main-color);
+    cursor: pointer;
+}
+
+.slider::-ms-track {
+    width: 300px;
+    height: 5px;
+    background: transparent;
+    border-color: transparent;
+    border-width: 6px 0;
+    color: transparent;
+}
+.slider::-ms-fill-lower {
+    background: #777;
+    border-radius: 10px;
+}
+.slider::-ms-fill-upper {
+    background: #ddd;
+    border-radius: 10px;
+}
+.slider::-ms-thumb {
+    border: none;
+    height: 19px;
+    width: 19px;
+    border-radius: 40%;
+    background: var(--main-color);
+    cursor: pointer;
+}
+.slider:focus::-ms-fill-lower {
+    background: #888;
+}
+.slider:focus::-ms-fill-upper {
+    background: #ccc;
+}
