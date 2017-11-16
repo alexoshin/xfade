@@ -16,7 +16,7 @@ body {
     background: var(--main-bg-color);
     color: var(--text-color);
     font-family: 'Open Sans', sans-serif;
-    text-align:center;
+    text-align: center;
 }
 h1 {
     color: var(--main-color);
@@ -28,15 +28,33 @@ p {
     font-size: 20px;
     padding: 10px;
 }
+input[type="file"] {
+    display: none;
+    visibility: hidden;
+}
+div {
+    display: inline-block;
+}
+.player {
+    position: relative;
+    display: inline-block;
+    height: 390px;
+    width: 640px;
+}
 .center {
     margin:auto;
-    width:100%;
-    padding-top:10px;
+    width: 100%;
+    padding-top: 10px;
 }
 .divider {
-    width:5px;
-    height:5px;
-    display:inline-block;
+    width: 5px;
+    height: 5px;
+    display: inline-block;
+}
+.container {
+    margin: auto;
+    text-align: center;
+    display: inline-block;
 }
 .header {
     position: relative;
@@ -49,7 +67,7 @@ p {
     text-align: center;
 }
 .footer {
-    position: relative;
+    position: absolute;
     padding-bottom: 20px;
     left: 0;
     bottom: 0;
@@ -66,6 +84,9 @@ p {
     border-radius: 4px;
     padding: 15px;
     min-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -85,6 +106,12 @@ p {
 }
 .button:active {
     opacity: .7;
+}
+.button[disabled], .button[disabled]:hover {
+    background-color: #1F2833;
+    color: #C5C6C7;
+    opacity: .7;
+    cursor: default;
 }
 
 /* Definitions used for gradient effect */

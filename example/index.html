@@ -18,7 +18,8 @@
         </section>
 
         <section id="playback">
-            <button class="button" id="mainbtn" style="visibility:hidden;" onclick="buttonClick()"></button><br>
+            <button class="button" id="submit" style="display:none;"></button>
+            <button class="button" id="mainbtn" style="visibility:hidden;" onclick="mainButtonClick()"></button><br>
             <div id="slidecontainer">
                 <input type="range" id="volumeSlider" class="slider" oninput="changeVolume(this.value)" min="0" max="100" step="1" style="visibility:hidden; display:none"></input>
             </div>

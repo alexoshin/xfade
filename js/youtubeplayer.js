@@ -1,7 +1,6 @@
 var videoLid;
 var videoRid;
 
-var firstClick = true;
 var playing = false;
 
 var leftPlaying = true;
@@ -12,25 +11,28 @@ var t = -1.0;
 
 var loading = false;
 
-function buttonClick() {
-    if (firstClick) {
-        videoLid = document.getElementById("leftinput").value;
-        videoRid = document.getElementById("rightinput").value;
-        if (videoLid == "") {
-            alert("Please enter a video id for the first video.");
-        } else if (videoRid == "") {
-            alert("Please enter a video id for the second video.");
-        } else {
-            document.getElementById("input").style.display = "none";
-            document.getElementById("mainbtn").textContent = "Loading... Please Wait";
-            var tag = document.createElement('script');
-            tag.src = "https://www.youtube.com/iframe_api";
-            var firstScriptTag = document.getElementsByTagName('script')[0];
-            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-            firstClick = false;
-            loading = true;
-        }
-    } else if (!loading) {
+// function submitClick() {
+//     videoLid = document.getElementById("leftinput").value;
+//     videoRid = document.getElementById("rightinput").value;
+//     if (videoLid == "") {
+//         alert("Please enter a video id for the first video.");
+//     } else if (videoRid == "") {
+//         alert("Please enter a video id for the second video.");
+//     } else {
+//         document.getElementById("input").style.display = "none";
+//         document.getElementById("submit").style.display = "none";
+//         document.getElementById("mainbtn").style.display = "inline";
+//         document.getElementById("mainbtn").textContent = "Loading... Please Wait";
+//         var tag = document.createElement('script');
+//         tag.src = "https://www.youtube.com/iframe_api";
+//         var firstScriptTag = document.getElementsByTagName('script')[0];
+//         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+//         loading = true;
+//     }
+// }
+
+function mainButtonClick() {
+    if (!loading) {
         if (playing) {
             pause(playerL);
         } else {
@@ -48,8 +50,24 @@ function examplePageStart() {
     tag.src = "https://www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-    firstClick = false;
     loading = true;
+}
+
+function youtubePageStart() {
+    videoLid = sessionStorage.videoLid;
+    videoRid = sessionStorage.videoRid;
+    if (videoLid == null || videoRid == null) {
+        alert("Something went wrong. Please enter your id's again.");
+        window.location.href = "../";
+    } else {
+        document.getElementById("mainbtn").textContent = "Loading... Please Wait";
+        document.getElementById("mainbtn").style.display = "inline";
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        loading = true;
+    }
 }
 
 var playerL;
@@ -186,6 +204,7 @@ function loop() {
 
 function bothReady() {
     if (!loadL && !loadR) {
+        //document.getElementById("submit").style.visibility = "hidden";
         document.getElementById("mainbtn").textContent = "Play";
         document.getElementById("xfadeButtons").style.display = "block";
         //document.getElementById("progress").style.display = "block";

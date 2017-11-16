@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>xfade Input</title>
+        <link rel="stylesheet" href="../css/style.css">
+    </head>
+    <body>
+        <div id="back1" class="gradientLeft"></div>
+
+        <section>
+            <div class="header"></div>
+        </section>
+        
+        <div class="container">
+            <section style="width:700px;float:left;">
+                <h1>Youtube</h1>
+                <form id="input" onsubmit="return false" style="padding:5px;">
+                    First Video ID:<div class="divider"></div><input type="text" id="leftinput" value="ohAy4fJ-fKg"><br><br>
+                    Second Video ID:<div class="divider"></div><input type="text" id="rightinput" value="lWalw9iV-so"><br><br>
+                    <button class="button" id="youtubeSubmit" onclick="youtubeSubmitClick()">Submit</button>
+                </form>
+                <div style="padding-bottom:50px;"></div>
+                <div class="tooltip">Help<span class="tooltiptext">Input two video id's from Youtube and hit submit.</span></div>
+            </section>
+
+            <section id="media" style="width:700px;float:left;">
+                <h1>Audio/Video Files</h1>
+                <label for="file1" id="file1button" class="button" style="max-height:50px;max-width:100px;">Upload File</label>
+                <input id="file1" type="file" required accept="audio/*,video/*" onchange="file1_input()"></input>
+
+                <label for="file2" id="file2button" class="button" style="max-height:50px;max-width:100px;">Upload File</label>
+                <input id="file2" type="file" required accept="audio/*,video/*" onchange="file2_input()"></input><br><br>
+                <button id="uploadSubmit" class="button" onclick="uploadSubmitClick()" disabled="true">Submit</button><br>
+
+                <div style="padding-bottom:50px;"></div>
+
+                <div class="tooltip">Help<span class="tooltiptext">Add two files from your computer and hit submit.</span></div>
+             </section>
+             <div style="clear:both;"></div>
+        
+
+        </div>
+
+        <div class="footer">
+            <H5>Contact me if you encounter any bugs!<br>alexoshin@gatech.edu</H5>
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="../js/input.js"></script>
+    </body>
+</html>
