@@ -29,13 +29,15 @@ function pageLoad() {
     }
 
     playerL.setAttribute("class", "player");
-    playerL.setAttribute("src", file1_url);
+    //playerL.setAttribute("src", file1_url);
+    playerL.setAttribute("src", window.URL.createObjectURL(file1));
     playerL.setAttribute("controls", "controls");
     playerL.setAttribute("display", "inline-block");
     document.getElementById("playerL").appendChild(playerL);
 
     playerR.setAttribute("class", "player");
-    playerR.setAttribute("src", file2_url);
+    //playerR.setAttribute("src", file2_url);
+    playerR.setAttribute("src", window.URL.createObjectURL(file2));
     playerR.setAttribute("controls", "controls");
     playerR.setAttribute("display", "inline-block");
     document.getElementById("playerR").appendChild(playerR);
