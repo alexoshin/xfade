@@ -1,35 +1,7 @@
-var videoLid;
-var videoRid;
-
-var playing = false;
-
-var leftPlaying = true;
-
-var fadetime = 1000;
-var maxVol;
-var t = -1.0;
-
-var loading = false;
-
-// function submitClick() {
-//     videoLid = document.getElementById("leftinput").value;
-//     videoRid = document.getElementById("rightinput").value;
-//     if (videoLid == "") {
-//         alert("Please enter a video id for the first video.");
-//     } else if (videoRid == "") {
-//         alert("Please enter a video id for the second video.");
-//     } else {
-//         document.getElementById("input").style.display = "none";
-//         document.getElementById("submit").style.display = "none";
-//         document.getElementById("mainbtn").style.display = "inline";
-//         document.getElementById("mainbtn").textContent = "Loading... Please Wait";
-//         var tag = document.createElement('script');
-//         tag.src = "https://www.youtube.com/iframe_api";
-//         var firstScriptTag = document.getElementsByTagName('script')[0];
-//         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-//         loading = true;
-//     }
-// }
+var videoLid, videoRid, playerL, playerR, volumeListener;
+var playing = false, leftPlaying = true;
+var loading = false, loadL = false, loadR = false;
+var fading = false, fadetime = 1000, maxVol, t = -1.0;
 
 function mainButtonClick() {
     if (!loading) {
@@ -70,8 +42,6 @@ function youtubePageStart() {
     }
 }
 
-var playerL;
-var playerR;
 function onYouTubeIframeAPIReady() {
     playerL = new YT.Player('playerL', {
         height: '390',
@@ -105,8 +75,6 @@ function pause(player) {
     playing = false;
 }
 
-var loadL = false;
-var loadR = false;
 function onPlayerLReady(event) {
     loadL = true;
     maxVol = playerL.getVolume();
@@ -114,6 +82,7 @@ function onPlayerLReady(event) {
     playerL.mute();
     playerL.seekTo(1);
 }
+
 function onPlayerRReady(event) {
     loadR = true;
     playerR.mute();
@@ -204,12 +173,8 @@ function loop() {
 
 function bothReady() {
     if (!loadL && !loadR) {
-        //document.getElementById("submit").style.visibility = "hidden";
         document.getElementById("mainbtn").textContent = "Play";
         document.getElementById("xfadeButtons").style.display = "block";
-        //document.getElementById("progress").style.display = "block";
-        // document.getElementById("volumeText").style.display = "inline";
-        // document.getElementById("volumeText").style.visibility = "visible";
         document.getElementById("volumeSlider").style.display = "inline";
         document.getElementById("volumeSlider").style.visibility = "visible";
         startVolumeListener();
@@ -217,7 +182,6 @@ function bothReady() {
     }
 }
 
-var fading = false;
 function xfade() {
     if (!fading) {
         fading = true;
@@ -265,7 +229,6 @@ function changeVolume(newVol) {
     }
 }
 
-var volListener;
 function startVolumeListener() {
     volListener = setInterval(function() {
         if (leftPlaying) {
@@ -277,6 +240,7 @@ function startVolumeListener() {
         }
     }, 100);
 }
+
 function endVolumeListener() {
     clearInterval(volListener);
 }

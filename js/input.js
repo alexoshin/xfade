@@ -1,25 +1,76 @@
-var leftInput;
-var rightInput;
-var videoLid;
-var videoRid;
+var videoLid, videoRid, volumeListener;
+var file1, file1_loaded, file1_type, file2, file2_loaded, file2_type;
+var playerL = document.getElementById("playerL");
+var playerR = document.getElementById("playerR");
+var playing = false, leftPlaying = true;
+var fading = false, fadetime = 1000, maxVol = 100, t = -1.0;
+var fileTypes = [
+    "audio/mpeg",
+    "audio/mp3",
+    "audio/ogg",
+    "audio/wav",
+    "audio/wave",
+    "audio/webm",
+    "audio/flac",
+    "video/mp4",
+    "video/webm",
+    "video/ogg"
+]
 
-var file1_loaded;
-var file2_loaded;
-var file1;
-var file2;
-var file1_type;
-var file2_type;
+function checkFile(file) {
+    for (i = 0; i < fileTypes.length; i++) {
+        if (file.type == fileTypes[i]) {
+            if (i < 7) {
+                return [true, "audio"];
+            } else {
+                return [true, "video"];
+            }
+        }
+    }
+    return [false, null];
+}
+
+function file1_input() {
+    file1_loaded = false;
+    file1 = document.getElementById("file1").files[0];
+    var checked = checkFile(file1);
+    if (!checked[0]) {
+        alert("Please select a supported audio or video file.");
+    } else {
+        document.getElementById("file1button").textContent = file1.name;
+        if (file2_loaded) {
+            document.getElementById("uploadSubmit").disabled = false;
+        }
+        file1_loaded = true;
+        file1_type = checked[1];
+    }
+}
+
+function file2_input() {
+    file2_loaded = false;
+    file2 = document.getElementById("file2").files[0];
+    var checked = checkFile(file2);
+    if (!checked[0]) {
+        alert("Please select a supported audio or video file.");
+    } else {
+        document.getElementById("file2button").textContent = file2.name;
+        if (file1_loaded) {
+            document.getElementById("uploadSubmit").disabled = false;
+        }
+        file2_loaded = true;
+        file2_type = checked[1];
+    }
+}
 
 function youtubeSubmitClick() {
-    leftInput = document.getElementById("leftinput").value;
-    rightInput = document.getElementById("rightinput").value;
-    var alerted = false;
+    var leftInput = document.getElementById("leftinput").value;
+    var rightInput = document.getElementById("rightinput").value;
     if (leftInput == "") {
         alert("Please enter a video url or id for the first video.");
     } else if (rightInput == "") {
         alert("Please enter a video url or id for the second video.");
     } else {
-        var isURL = false;
+        var isURL = false, alerted = false;
         if (leftInput.length != 11) {
             isURL = true;
         } else {
@@ -35,7 +86,6 @@ function youtubeSubmitClick() {
                 videoLid = match[2];
             }
         }
-
         isURL = false;
         if (!alerted && rightInput.length != 11) {
             isURL = true;
@@ -52,7 +102,6 @@ function youtubeSubmitClick() {
                 videoRid = match[2];
             }
         }
-
         if (videoLid && videoRid) {
             sessionStorage.videoLid = videoLid;
             sessionStorage.videoRid = videoRid;
@@ -64,91 +113,129 @@ function youtubeSubmitClick() {
 }
 
 function uploadSubmitClick() {
-    sessionStorage.clear();
-    sessionStorage.setItem("file1", file1);
-    sessionStorage.setItem("file2", file2);
-    sessionStorage.setItem("file1_url", window.URL.createObjectURL(file1));
-    sessionStorage.setItem("file2_url", window.URL.createObjectURL(file2));
-    sessionStorage.setItem("file1_type", file1_type);
-    sessionStorage.setItem("file2_type", file2_type);
-
-    fileReader1 = new FileReader();
-    fileReader2 = new FileReader();
-    fileReader1.onload = function (evt) {
-        var result = evt.target.result;
-        document.cookie = "file1_url=" + result;
-        fileReader2.readAsDataURL(file2);
-    };
-    fileREader2.onload = function (evt) {
-        var result = evt.target.result;
-        document.cookie = "file2_url=" + result;
-        window.location.href = "./usermedia";
-    };
-    fileReader1.readAsDataURL(file1);
-    // sessionStorage.file1 = file1;
-    // sessionStorage.file2 = file2;
-    // sessionStorage.file1_type = file1_type;
-    // sessionStorage.file2_type = file2_type;
-    
+    document.getElementById("youtube").style.display = "none";
+    document.getElementById("media").style.display = "none";
+    playerL.setAttribute("src", window.URL.createObjectURL(file1));
+    playerL.style.display = "inline-block";
+    playerR.setAttribute("src", window.URL.createObjectURL(file2));
+    playerR.style.display = "inline-block";
+    document.getElementById("players").style.display = "inline";
+    document.getElementById("xfadeButtons").style.display = "inline";
+    document.getElementById("volumeSlider").value = maxVol;
+    playerR.volume = 0;
+    startVolumeListener();
+    history.pushState(true,null,"#/usermedia");
 }
 
-function file1_input() {
-    file1_loaded = false;
-    file1 = document.getElementById("file1").files[0];
-    var checked = checkFile(file1);
-    if (!checked[0]) {
-        alert("Please select a supported audio or video file.");
+window.addEventListener("popstate", function(event) {
+    if (!event.state) {
+        document.getElementById("youtube").style.display = "inline";
+        document.getElementById("media").style.display = "inline";
+        document.getElementById("players").style.display = "none";
+        document.getElementById("xfadeButtons").style.display = "none";
     } else {
-        var label = document.getElementById("file1button");
-        label.textContent = file1.name;
-        if (file2_loaded) {
-            document.getElementById("uploadSubmit").disabled = false;
-        }
-        file1_loaded = true;
-        file1_type = checked[1];
+        document.getElementById("youtube").style.display = "none";
+        document.getElementById("media").style.display = "none";
+        document.getElementById("players").style.display = "inline";
+        document.getElementById("xfadeButtons").style.display = "inline";
     }
-}
+});
 
-function file2_input() {
-    file2_loaded = false;
-    file2 = document.getElementById("file2").files[0];
-    var checked = checkFile(file2);
-    if (!checked[0]) {
-        alert("Please select a supported audio or video file.");
+function mainButtonClick() {
+    if (playing) {
+        pause(playerL);
     } else {
-        var label = document.getElementById("file2button");
-        label.textContent = file2.name;
-        if (file1_loaded) {
-            document.getElementById("uploadSubmit").disabled = false;
-        }
-        file2_loaded = true;
-        file2_type = checked[1];
+        play(playerL);
     }
-    //console.log("yes");
 }
 
-var fileTypes = [
-    "audio/mpeg",
-    "audio/mp3",
-    "audio/ogg",
-    "audio/wav",
-    "audio/wave",
-    "audio/webm",
-    "audio/flac",
-    "video/mp4",
-    "video/webm",
-    "video/ogg"
-]
-function checkFile(file) {
-    var type = file.type;
-    for (i = 0; i < fileTypes.length; i++) {
-        if (type == fileTypes[i]) {
-            if (i < 7) {
-                return [true, "audio"];
-            } else {
-                return [true, "video"];
-            }
+function play(player) {
+    player.play();
+    document.getElementById("mainbtn").textContent = "Pause";
+    playing = true;
+}
+
+function pause(player) {
+    player.pause();
+    document.getElementById("mainbtn").textContent = "Play";
+    playing = false;
+}
+
+playerL.addEventListener("play", function(e) {
+    play(playerR);
+});
+
+playerR.addEventListener("play", function(e) {
+    play(playerL);
+});
+
+playerL.addEventListener("pause", function(e) {
+    pause(playerR);
+});
+
+playerR.addEventListener("pause", function(e) {
+    pause(playerL);
+});
+
+function xfade() {
+    if (!fading) {
+        fading = true;
+        endVolumeListener();
+        if (leftPlaying) {
+            $("#back1").animate({opacity: 0}, 1000);
+            var changeT = 2/(fadetime/50);
+            var interval = setInterval(function() {
+                if (t >= 1) {
+                    clearInterval(interval);
+                    startVolumeListener();
+                    fading = false;
+                } else {
+                    playerL.volume = Math.round(maxVol * Math.sqrt(1/2 * (1 - Math.max(-1,t))))/100;
+                    playerR.volume = Math.round(maxVol * Math.sqrt(1/2 * (1 + Math.max(-1,t))))/100;
+                    t += changeT;
+                }
+            }, 50);
+            leftPlaying = false;
+        } else {
+            $("#back1").animate({opacity: 1}, 1000);
+            var changeT = 2/(fadetime/50);
+            var interval = setInterval(function() {
+                if (t <= -1) {
+                    clearInterval(interval);
+                    startVolumeListener();
+                    fading = false;
+                } else {
+                    playerL.volume = Math.round(maxVol * Math.sqrt(1/2 * (1 - Math.min(1,t))))/100;
+                    playerR.volume = Math.round(maxVol * Math.sqrt(1/2 * (1 + Math.min(1,t))))/100;
+                    t -= changeT;
+                }
+            }, 50);
+            leftPlaying = true;
         }
     }
-    return [false, null];
+}
+
+function changeVolume(newVol) {
+    maxVol = newVol;
+    if (leftPlaying) {
+        playerL.volume = newVol/100;
+    } else {
+        playerR.volume = newVol/100;
+    }
+}
+
+function startVolumeListener() {
+    volListener = setInterval(function() {
+        if (leftPlaying) {
+            maxVol = playerL.volume*100;
+            document.getElementById("volumeSlider").value = maxVol;
+        } else {
+            maxVol = playerR.volume*100;
+            document.getElementById("volumeSlider").value = maxVol;
+        }
+    }, 100);
+}
+
+function endVolumeListener() {
+    clearInterval(volListener);
 }

@@ -6,13 +6,29 @@
     </head>
     <body>
         <div id="back1" class="gradientLeft"></div>
+        <div id="back2" class="gradientRight"></div>
 
         <section>
             <div class="header"></div>
         </section>
         
         <div class="container">
-            <section style="width:700px;float:left;">
+            <section id="players" style="display:none;">
+                <audio id="playerL" class="player" controls="controls"></audio>
+                <audio id="playerR" class="player" controls="controls"></audio>
+                <button class="button" id="mainbtn" onclick="mainButtonClick()">Play</button><br>
+                <div id="slidecontainer">
+                <input type="range" id="volumeSlider" class="slider" oninput="changeVolume(this.value)" min="0" max="100" step="1"></input>
+                </div>
+            </section>
+
+            <section></section>
+
+            <section class="center" id="xfadeButtons" style="display:none">
+                <button class="button" id="xfade" onclick="xfade()">xfade</button><br>
+            </section>
+
+            <section id="youtube" style="width:700px;float:left;">
                 <h1>Youtube</h1>
                 <form id="input" onsubmit="return false" style="padding:5px;">
                     First Video ID:<div class="divider"></div><input type="text" id="leftinput" value="ohAy4fJ-fKg"><br><br>
