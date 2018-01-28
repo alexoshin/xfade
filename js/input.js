@@ -1,3 +1,5 @@
+var leftInput;
+var rightInput;
 var videoLid;
 var videoRid;
 
@@ -9,16 +11,55 @@ var file1_type;
 var file2_type;
 
 function youtubeSubmitClick() {
-    videoLid = document.getElementById("leftinput").value;
-    videoRid = document.getElementById("rightinput").value;
-    if (videoLid == "") {
-        alert("Please enter a video id for the first video.");
-    } else if (videoRid == "") {
-        alert("Please enter a video id for the second video.");
+    leftInput = document.getElementById("leftinput").value;
+    rightInput = document.getElementById("rightinput").value;
+    var alerted = false;
+    if (leftInput == "") {
+        alert("Please enter a video url or id for the first video.");
+    } else if (rightInput == "") {
+        alert("Please enter a video url or id for the second video.");
     } else {
-        sessionStorage.videoLid = videoLid;
-        sessionStorage.videoRid = videoRid;
-        window.location.href = "./youtube";
+        var isURL = false;
+        if (leftInput.length != 11) {
+            isURL = true;
+        } else {
+            videoLid = leftInput;
+        }
+        if (isURL) {
+            var regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            var match = leftInput.match(regExp);
+            if (!match || match[2].length != 11) {
+                alert("Invalid first url or id.");
+                alerted = true;
+            } else {
+                videoLid = match[2];
+            }
+        }
+
+        isURL = false;
+        if (!alerted && rightInput.length != 11) {
+            isURL = true;
+        } else {
+            videoRid = rightInput;
+        }
+        if (!alerted && isURL) {
+            var regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            var match = rightInput.match(regExp);
+            if (!match || match[2].length != 11) {
+                alert("Invalid second url or id.");
+                alerted = true;
+            } else {
+                videoRid = match[2];
+            }
+        }
+
+        if (videoLid && videoRid) {
+            sessionStorage.videoLid = videoLid;
+            sessionStorage.videoRid = videoRid;
+            window.location.href = "./youtube";
+        } else if (!alerted) {
+            alert("Something went wrong.");
+        }
     }
 }
 
