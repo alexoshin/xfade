@@ -64,10 +64,15 @@ function youtubeSubmitClick() {
 }
 
 function uploadSubmitClick() {
-    sessionStorage.file1 = file1;
-    sessionStorage.file2 = file2;
-    sessionStorage.file1_type = file1_type;
-    sessionStorage.file2_type = file2_type;
+    sessionStorage.clear();
+    sessionStorage.setItem("file1_url", window.URL.createObjectURL(file1));
+    sessionStorage.setItem("file2_url", window.URL.createObjectURL(file2));
+    sessionStorage.setItem("file1_type", file1_type);
+    sessionStorage.setItem("file2_type", file2_type);
+    // sessionStorage.file1 = file1;
+    // sessionStorage.file2 = file2;
+    // sessionStorage.file1_type = file1_type;
+    // sessionStorage.file2_type = file2_type;
     window.location.href = "./usermedia";
 }
 
