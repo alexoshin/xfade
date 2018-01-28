@@ -65,6 +65,8 @@ function youtubeSubmitClick() {
 
 function uploadSubmitClick() {
     sessionStorage.clear();
+    sessionStorage.setItem("file1", file1);
+    sessionStorage.setItem("file2", file2);
     sessionStorage.setItem("file1_url", window.URL.createObjectURL(file1));
     sessionStorage.setItem("file2_url", window.URL.createObjectURL(file2));
     sessionStorage.setItem("file1_type", file1_type);
@@ -108,7 +110,7 @@ function file2_input() {
         file2_loaded = true;
         file2_type = checked[1];
     }
-    console.log("yes");
+    //console.log("yes");
 }
 
 var fileTypes = [

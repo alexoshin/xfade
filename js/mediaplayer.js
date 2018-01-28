@@ -1,3 +1,5 @@
+var file1;
+var file2;
 var file1_url;
 var file2_url;
 var file1_type;
@@ -6,6 +8,9 @@ var playerL;
 var playerR;
 
 function pageLoad() {
+    file1 = sessionStorage.getItem("file1");
+    file2 = sessionStorage.getItem("file2");
+    console.log(file1);
     file1_url = sessionStorage.getItem("file1_url");
     file2_url = sessionStorage.getItem("file2_url");
     file1_type = sessionStorage.getItem("file1_type");
@@ -41,5 +46,5 @@ function mainButtonClick() {
 }
 
 function xfade() {
-    
+
 }
