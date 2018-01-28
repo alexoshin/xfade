@@ -71,11 +71,25 @@ function uploadSubmitClick() {
     sessionStorage.setItem("file2_url", window.URL.createObjectURL(file2));
     sessionStorage.setItem("file1_type", file1_type);
     sessionStorage.setItem("file2_type", file2_type);
+
+    fileReader1 = new FileReader();
+    fileReader2 = new FileReader();
+    fileReader1.onload = function (evt) {
+        var result = evt.target.result;
+        document.cookie = "file1_url=" + result;
+        fileReader2.readAsDataURL(file2);
+    };
+    fileREader2.onload = function (evt) {
+        var result = evt.target.result;
+        document.cookie = "file2_url=" + result;
+        window.location.href = "./usermedia";
+    };
+    fileReader1.readAsDataURL(file1);
     // sessionStorage.file1 = file1;
     // sessionStorage.file2 = file2;
     // sessionStorage.file1_type = file1_type;
     // sessionStorage.file2_type = file2_type;
-    window.location.href = "./usermedia";
+    
 }
 
 function file1_input() {
