@@ -124,11 +124,12 @@ function uploadSubmitClick() {
     document.getElementById("volumeSlider").value = maxVol;
     playerR.volume = 0;
     startVolumeListener();
-    history.pushState(true,null,"#/usermedia");
+    history.pushState(true,null,"/usermedia");
 }
 
 window.addEventListener("popstate", function(event) {
     if (!event.state) {
+        pause(playerL);
         document.getElementById("youtube").style.display = "inline";
         document.getElementById("media").style.display = "inline";
         document.getElementById("players").style.display = "none";
