@@ -13,9 +13,12 @@
         </section>
         
         <div class="container">
-            <section id="players" style="display:none;">
+            <section id="players" style="padding:10px; display:none;">
                 <audio id="playerL" class="player" controls="controls"></audio>
                 <audio id="playerR" class="player" controls="controls"></audio>
+            </section>
+
+            <section id="playback" style="display:none;">
                 <button class="button" id="mainbtn" onclick="mainButtonClick()">Play</button><br>
                 <div id="slidecontainer">
                 <input type="range" id="volumeSlider" class="slider" oninput="changeVolume(this.value)" min="0" max="100" step="1"></input>

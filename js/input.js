@@ -119,7 +119,8 @@ function uploadSubmitClick() {
     playerL.style.display = "inline-block";
     playerR.setAttribute("src", window.URL.createObjectURL(file2));
     playerR.style.display = "inline-block";
-    document.getElementById("players").style.display = "inline";
+    document.getElementById("players").style.display = "block";
+    document.getElementById("playback").style.display = "inline";
     document.getElementById("xfadeButtons").style.display = "inline";
     document.getElementById("volumeSlider").value = maxVol;
     playerR.volume = 0;
