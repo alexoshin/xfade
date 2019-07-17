@@ -1,4 +1,7 @@
 # xfade
+
+**There is currently a bug that stops any Youtube video from loading! Probably due to my API key expiring. Working on getting this fixed!**
+
 Click here to see it in action: https://alexoshin.github.io/xfade/
 
 xfade is an open-source, lightweight website that simultaneously plays two audio or video files and allows seamless audio fading between them. xfade works best on two files that are meant to be faded into each other. An example is available on the splash page of the site.
