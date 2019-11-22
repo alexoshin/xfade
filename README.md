@@ -1,6 +1,6 @@
 # xfade
 
-**There is currently a bug that stops any Youtube video from loading! Probably due to my API key expiring. Working on getting this fixed!**
+**Seems like the videos now load, but there have been API changes that cause the videos to get out of sync. Working on getting this fixed!**
 
 Click here to see it in action: https://alexoshin.github.io/xfade/
 
